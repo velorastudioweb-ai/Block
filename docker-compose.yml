@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  validator-1:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install --omit=dev && node apps/validator/server.js 4101"
+    ports: ["4101:4101"]
+    environment:
+      - NODE_ENV=production
+  validator-2:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install --omit=dev && node apps/validator/server.js 4102"
+    ports: ["4102:4102"]
+  validator-3:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install --omit=dev && node apps/validator/server.js 4103"
+    ports: ["4103:4103"]
+  api:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install --omit=dev && node apps/api/server.js"
+    ports: ["4000:4000"]
+    depends_on: [validator-1, validator-2, validator-3]
+    environment:
+      - PUBLIC_WEB_URL=http://localhost:5173
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run build && npx vite preview --host 0.0.0.0 --port 5173"
+    ports: ["5173:5173"]
+    depends_on: [api]

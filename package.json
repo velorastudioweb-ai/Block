@@ -1,0 +1,33 @@
+{
+  "name": "academic-certificate-blockchain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev": "concurrently -k \"npm:validators\" \"npm:api\" \"npm:web\"",
+    "validators": "concurrently -k \"node apps/validator/server.js 4101\" \"node apps/validator/server.js 4102\" \"node apps/validator/server.js 4103\"",
+    "api": "node apps/api/server.js",
+    "web": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^9.1.2",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "lucide-react": "^0.468.0",
+    "multer": "^2.5.0",
+    "pdfkit": "^0.16.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^6.0.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
